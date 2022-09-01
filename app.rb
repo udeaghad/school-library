@@ -1,4 +1,14 @@
+require_relative 'app_options'
+require_relative 'book'
+require_relative 'student'
+require_relative 'teacher'
 class App
+  include AppOptions
+  def initialize
+    @books = []
+    @people =[]
+  end
+  
 
   def options
     puts "Welcome to School library App!"
@@ -40,5 +50,5 @@ class App
   end
 end
 
-action = App.new
-action.run
+# action = App.new
+# action.run
