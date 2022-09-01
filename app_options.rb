@@ -77,6 +77,19 @@ module AppOptions
     run
   end
 
+def create_book
+  puts "Enter Book title"
+  title = gets.chomp
 
+  puts "Enter Author's name"
+  author = gets.chomp
+
+  new_book = Book.new(title, author)
+  @books << new_book
+  puts "New book creates"
+
+  puts "\n"
+  run
+end
   
 end

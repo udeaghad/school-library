@@ -2,6 +2,7 @@ require_relative 'app_options'
 require_relative 'book'
 require_relative 'student'
 require_relative 'teacher'
+require_relative 'book'
 class App
   include AppOptions
   def initialize
