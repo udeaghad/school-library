@@ -15,7 +15,7 @@ module AppOptions
     puts "No list to display" unless @people.length > 0
 
     @people.each {|person|
-    puts "ID: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+    puts "[#{person.class.name}] ID: #{person.id}, Name: #{person.name}, Age: #{person.age}"
     }
 
     puts "\n"
@@ -42,13 +42,13 @@ module AppOptions
       
       if parent_permission == 'N'       
         student = Student.new('unknown', age, name, parent_permission: false)
-        @people.push(student)
+        @people << student
         puts "student is under age and would require parent's permission"
         puts "\n"
       else 
       
         student = Student.new('unknown', age, name, parent_permission: true)
-        @people.push(student)
+        @people << student
         puts "Student added"
         puts "\n"
       end
@@ -64,7 +64,7 @@ module AppOptions
       specialization = gets.chomp
 
       teacher = Teacher.new(specialization, age, name, parent_permission: true)
-      @people.push(teacher)
+      @people << teacher
       puts "Teacher added"
       puts "\n"
 
@@ -86,10 +86,55 @@ def create_book
 
   new_book = Book.new(title, author)
   @books << new_book
-  puts "New book creates"
+  puts "New book created"
 
   puts "\n"
   run
+end
+
+def create_rental
+  puts "Pick a book from the following list(Enter the serial number)"
+  @books.each_with_index { |book, index|
+  puts "#{index}) Title: #{book.title}, Author: #{book.author}"
+  }
+  book_selected = gets.chomp.to_i
+
+  puts "Select a person from the following list(Enter the serial number and not the ID)"
+  @people.each_with_index { |person, index|
+  puts "#{index})  [#{person.class.name}] Name: #{person.name}, Age: #{person.age}, ID: #{person.id}"
+  }
+
+  person_selected = gets.chomp.to_i
+
+  puts "Enter date"
+  date = gets.to_s
+
+  new_rental = Rental.new(date, @books[book_selected], @people[person_selected])
+  @rental << new_rental
+  print @rental
+  puts "Book rented successfully"
+  puts "\n"
+
+  run
+end
+
+def list_rental_per_person_id
+  puts "Enter the ID of the person"
+  person_id = gets.chomp
+
+ @rental.each { |rent|
+  # puts rent.person.id
+  # puts person_id
+ if rent.person.id == person_id.to_i
+  puts "Date: #{rent.date} #{rent.book.title} by #{rent.book.author}"
+  puts "\n"
+ else
+  puts "Record not found"
+  puts "\n"
+ end
+ }
+
+ run
 end
   
 end

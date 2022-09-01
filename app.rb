@@ -3,11 +3,13 @@ require_relative 'book'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'book'
+require_relative 'rental'
 class App
   include AppOptions
   def initialize
     @books = []
-    @people =[]
+    @people = []
+    @rental = []
   end
   
 
@@ -26,28 +28,40 @@ class App
 
   def selected_number(number)
     case number
-    when '1'
+    when 1
       list_all_books
-    when '2'
+    when 2
       list_people
-    when '3'
+    when 3
       create_person
-    when '4'
+    when 4
       create_book
-    when '5'
+    when 5
       create_rental
-    when '6'
-      list_rental_per_person
-    else
+      
+    when 6
+      list_rental_per_person_id
+      
+    when 7
       exit
+    else
+      run
     end
   end
 
   def run
-    options
-    puts "Enter a number"
-    number = gets.chomp
+    options 
+    puts "Enter a number"   
+    number = gets.chomp.to_i
+
+    if number < 8
     selected_number(number)
+    else 
+      options
+      puts "Enter a number"   
+      number = gets.chomp.to_i
+      selected_number(number)
+    end
   end
 end
 
