@@ -1,32 +1,32 @@
-require_relative 'app_options'
+require_relative 'list_options'
+require_relative 'create_options'
 require_relative 'book'
 require_relative 'student'
 require_relative 'teacher'
-require_relative 'book'
 require_relative 'rental'
 class App
-  include AppOptions
+  include ListOptions
+  include CreateOptions
   def initialize
     @books = []
     @people = []
     @rental = []
   end
-  
 
   def options
-    puts "Welcome to School library App!"
+    puts 'Welcome to School library App!'
     puts "\n"
-    puts "Please choose an option by entering a number"
-    puts "1 - List all books"
-    puts "2 - List all people"
-    puts "3 - Create a person"
-    puts "4 - Create a book"
-    puts "5 - Create a rental"
-    puts "6 - List all rentals for a person given id"
-    puts "7 - Exit"
+    puts 'Please choose an option by entering a number'
+    puts '1 - List all books'
+    puts '2 - List all people'
+    puts '3 - Create a person'
+    puts '4 - Create a book'
+    puts '5 - Create a rental'
+    puts '6 - List all rentals for a person given id'
+    puts '7 - Exit'
   end
 
-  def selected_number(number)
+  def selected(number)
     case number
     when 1
       list_all_books
@@ -38,32 +38,17 @@ class App
       create_book
     when 5
       create_rental
-      
     when 6
       list_rental_per_person_id
-      
-    when 7
-      exit
     else
-      run
+      exit
     end
   end
 
   def run
-    options 
-    puts "Enter a number"   
+    options
+    puts 'Enter a number'
     number = gets.chomp.to_i
-
-    if number < 8
-    selected_number(number)
-    else 
-      options
-      puts "Enter a number"   
-      number = gets.chomp.to_i
-      selected_number(number)
-    end
+    selected(number) if number.positive? && number < 8
   end
 end
-
-# action = App.new
-# action.run
