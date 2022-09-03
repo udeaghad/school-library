@@ -24,7 +24,7 @@ module ListOptions
     person_id = gets.chomp
 
     @rental.each do |rent|
-      binding.pry
+      
       if rent.person.id == person_id.to_i
         puts "Date: #{rent.date} '#{rent.title}' by #{rent.book.author}"
       else
