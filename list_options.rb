@@ -12,7 +12,7 @@ module ListOptions
     puts 'No list to display' unless @people.length.positive?
 
     @people.each do |person|
-      puts "[#{person.class.name}] ID: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+     puts "[#{person.class.name}] ID: #{person.id}, Name: #{person.name}, Age: #{person.age}"
     end
 
     puts "\n"
@@ -24,8 +24,9 @@ module ListOptions
     person_id = gets.chomp
 
     @rental.each do |rent|
+      binding.pry
       if rent.person.id == person_id.to_i
-        puts "Date: #{rent.date} '#{rent.book.title}' by #{rent.book.author}"
+        puts "Date: #{rent.date} '#{rent.title}' by #{rent.book.author}"
       else
         puts 'Record not found'
       end

@@ -53,7 +53,6 @@ module CreateOptions
 
     new_rental = Rental.new(date, @books[book_selected], @people[person_selected])
     @rental << new_rental
-    print @rental
     puts 'Book rented successfully'
     puts "\n"
 
