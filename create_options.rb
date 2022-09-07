@@ -1,4 +1,7 @@
+require './storage/save_data'
+require './storage/load_data'
 module CreateOptions
+  include SaveData
   def create_person
     puts 'press 1 to create a student'
     puts 'press 2 to create a teacher'
@@ -27,7 +30,9 @@ module CreateOptions
     author = gets.chomp
 
     new_book = Book.new(title, author)
-    @books << new_book
+
+    @books << { :title.to_s => new_book.title, :author.to_s => new_book.author }
+    save_book(@books)
     puts 'New book created'
 
     puts "\n"
@@ -37,23 +42,27 @@ module CreateOptions
   def create_rental
     puts 'Pick a book from the following list(Enter the serial number)'
     @books.each_with_index do |book, index|
-      puts "#{index}) Title: #{book.title}, Author: #{book.author}"
+      puts "#{index}) Title: #{book['title']}, Author: #{book['author']}"
     end
     book_selected = gets.chomp.to_i
 
     puts 'Select a person from the following list(Enter the serial number and not the ID)'
     @people.each_with_index do |person, index|
-      puts "#{index})  [#{person.class.name}] Name: #{person.name}, Age: #{person.age}, ID: #{person.id}"
+      puts "#{index})  [#{person['person']}] Name: #{person['name']}, Age: #{person['age']}, ID: #{person['id']}"
     end
 
     person_selected = gets.chomp.to_i
 
     puts 'Enter date'
-    date = gets.to_s
+    date = gets.chomp.to_s
 
     new_rental = Rental.new(date, @books[book_selected], @people[person_selected])
-    @rental << new_rental
-    print @rental
+    # binding.pry
+    @rental << { :date.to_s => new_rental.date, :id.to_s => new_rental.person['id'],
+                 :name.to_s => new_rental.person['name'], :title.to_s => new_rental.book['title'],
+                 :author.to_s => new_rental.book['author'] }
+
+    save_rental(@rental)
     puts 'Book rented successfully'
     puts "\n"
 

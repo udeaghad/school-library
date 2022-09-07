@@ -4,13 +4,15 @@ require_relative 'book'
 require_relative 'student'
 require_relative 'teacher'
 require_relative 'rental'
+require './storage/load_data'
 class App
   include ListOptions
   include CreateOptions
+  include LoadData
   def initialize
-    @books = []
-    @people = []
-    @rental = []
+    @books = load_books
+    @people = load_people
+    @rental = load_rentals
   end
 
   def options
@@ -42,6 +44,7 @@ class App
       list_rental_per_person_id
     else
       exit
+
     end
   end
 

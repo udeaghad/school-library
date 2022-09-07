@@ -2,7 +2,7 @@ module ListOptions
   def list_all_books
     puts 'No list to display' unless @books.length.positive?
     @books.each do |book|
-      puts "Title: #{book.title}, Author: #{book.author}"
+      puts "Title: #{book['title']}, Author: #{book['author']}"
     end
     puts "\n"
     run
@@ -12,7 +12,7 @@ module ListOptions
     puts 'No list to display' unless @people.length.positive?
 
     @people.each do |person|
-      puts "[#{person.class.name}] ID: #{person.id}, Name: #{person.name}, Age: #{person.age}"
+      puts "[#{person['person']}] ID: #{person['id']}, Name: #{person['name']}, Age: #{person['age']}"
     end
 
     puts "\n"
@@ -23,13 +23,15 @@ module ListOptions
     puts 'Enter the ID of the person'
     person_id = gets.chomp
 
-    @rental.each do |rent|
-      if rent.person.id == person_id.to_i
-        puts "Date: #{rent.date} '#{rent.book.title}' by #{rent.book.author}"
-      else
-        puts 'Record not found'
+    filter_rental = @rental.select { |item| item['id'] == person_id.to_i }
+
+    if filter_rental.length.zero?
+      puts 'Record not found'
+    else
+      filter_rental.each do |rent|
+        puts "Date: #{rent['date']} '#{rent['title']}' by #{rent['author']}"
+        puts "\n"
       end
-      puts "\n"
     end
 
     run
@@ -42,22 +44,25 @@ module ListOptions
     puts "Enter student's Age"
     age = gets.chomp
 
-    if age.to_i < 18
-      puts "Parent's Permission? [Y/N]"
-      parent_permission = gets.chomp.upcase
-    end
+    puts "Parent's Permission? [Y/N]"
+    parent_permission = gets.chomp.upcase
 
     if parent_permission == 'N'
       student = Student.new('unknown', age, name, parent_permission: false)
-      @people << student
+      @people << { :person.to_s => student.class.name, :age.to_s => age, :name.to_s => name, :id.to_s => student.id,
+                   :classroom.to_s => student.classroom, :parent_permission.to_s => student.parent_permission }
+
       puts "student is under age and would require parent's permission"
     else
 
       student = Student.new('unknown', age, name, parent_permission: true)
-      @people << student
+
+      @people << { :person.to_s => student.class.name, :age.to_s => age, :name.to_s => name, :id.to_s => student.id,
+                   :classroom.to_s => student.classroom, :parent_permission.to_s => student.parent_permission }
+
+      save_student(@people)
       puts 'Student added'
     end
-    puts "\n"
   end
 
   def create_teacher
@@ -71,7 +76,10 @@ module ListOptions
     specialization = gets.chomp
 
     teacher = Teacher.new(specialization, age, name, parent_permission: true)
-    @people << teacher
+    @people << { :person.to_s => teacher.class.name, :age.to_s => age, :name.to_s => name, :id.to_s => teacher.id,
+                 :specialization.to_s => teacher.specialization, :parent_permission.to_s => teacher.parent_permission }
+
+    save_teacher(@people)
     puts 'Teacher added'
     puts "\n"
   end
